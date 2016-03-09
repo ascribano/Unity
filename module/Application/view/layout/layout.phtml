@@ -64,7 +64,12 @@
 
 					<h4><a href="/howitworks">How it works</a> - 
 					<a href="/pricing">Pricing</a> - 
+					<?php 
+					if(APPLICATION_ENV=="development"){ ?>
+					<a href="http://blog.dev-unityassessments.com.au/" target="_blank">Blog</a>
+					<?php }else { ?>
 					<a href="http://blog.unityassessments.com.au/" target="_blank">Blog</a>
+					<?php } ?>
 					
 				</div>
 				

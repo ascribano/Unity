@@ -8,6 +8,12 @@ error_reporting(E_ALL);
 
 chdir(dirname(__DIR__));
 
+defined('APPLICATION_ENV')
+    || define('APPLICATION_ENV',
+              (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV')
+                                         : 'production'));
+
+
 // Decline static file requests back to the PHP built-in webserver
 if (php_sapi_name() === 'cli-server') {
     $path = realpath(__DIR__ . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
@@ -16,6 +22,7 @@ if (php_sapi_name() === 'cli-server') {
     }
     unset($path);
 }
+
 
 // Setup autoloading
 require 'init_autoloader.php';
