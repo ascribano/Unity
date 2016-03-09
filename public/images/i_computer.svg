@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="120px" height="90px" viewBox="0 0 120 90" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>i_computer</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="i_computer" sketch:type="MSArtboardGroup" stroke="#5F5F5F" stroke-width="3">
+            <g id="Group-Copy-37" sketch:type="MSLayerGroup" transform="translate(7.000000, 15.000000)">
+                <path d="M19.1774923,2.00526988 C19.2443129,0.897789907 20.2002358,0 21.2961971,0 L82.8554496,0 C83.9587573,0 84.9503085,0.894473121 85.0694362,1.99137104 L89.0896649,39.008629 C89.2091082,40.1084328 88.4156553,41 87.3107278,41 L18.8199282,41 C17.7180051,41 16.8786886,40.1055269 16.9457092,38.9947301 L19.1774923,2.00526988 Z" id="Rectangle-304-Copy" sketch:type="MSShapeGroup"></path>
+                <path d="M12.8710855,50.2278169 C13.7463694,49.5497123 15.3588093,49 16.4622589,49 L90.4436652,49 C91.5517316,49 93.1599804,49.5467973 94.0297596,50.216662 L106.451515,59.783338 C107.323994,60.4552819 107.137336,61 106.02155,61 L0.976293742,61 C-0.133648468,61 -0.327639354,60.4532027 0.551407209,59.7721831 L12.8710855,50.2278169 Z" id="Rectangle-304-Copy-2" stroke-linejoin="round" sketch:type="MSShapeGroup"></path>
+            </g>
+        </g>
+    </g>
+</svg>
