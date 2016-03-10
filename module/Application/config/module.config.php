@@ -61,6 +61,7 @@ return array(
             // module. Simply drop new controllers in, and you can access them
             // using the path /application/:controller/:action
             // new controllers and actions without needing to create a new
+
             'application' => array(
                 'type'    => 'Literal',
                 'options' => array(

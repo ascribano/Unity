@@ -21,32 +21,6 @@ class ServicesController extends AbstractActionController
  	*/
     public static function index($subject = '',$body = ''){
 
-
-		$from 	= "no_reply@unityassessments.com.au";
-		$to 	= "armando@unityassessments.com.au";
-	    $msg 	= new Message();
-
-	    $msg->setFrom(self::$from,'Website Contact')
-	        ->setTo(self::$to,'api')
-	        ->setSubject($subject);
-
-	    $html 			= new MimePart($body);
-	    $html->type 	= Mime::TYPE_HTML;
-	    $html->charset 	= 'UTF-8';
-
-	    $body = new MimeMessage();
-	    $body->setParts(array($html));
-
-	    // the order is the point
-	    $msg->setBody($body);
-	    $msg->setEncoding('UTF-8');
-
-	    $smtpOpt = new SmtpOptions(self::$smtpOption);
-
-	    $trans = new Smtp();
-	    $trans->setOptions($smtpOpt);
-	    $trans->send($msg);
-
 	    $this->_helper->layout->disableLayout();
 		$this->_helper->viewRenderer->setNoRender(TRUE);
 
