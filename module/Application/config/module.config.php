@@ -34,17 +34,28 @@ return array(
 			      	),
 				),
 			),
-        		
+	
         	'pricing' => array(
-        			'type' => 'Zend\Mvc\Router\Http\Literal',
-        			'options' => array(
-        					'route'    => '/pricing',
-        					'defaults' => array(
-        							'controller' => 'application/Controller/Pricing',
-        							'action'     => 'index',
-        					),
-        			),
-        	),       	
+    			'type' => 'Zend\Mvc\Router\Http\Literal',
+    			'options' => array(
+					'route'    => '/pricing',
+					'defaults' => array(
+						'controller' => 'application/Controller/Pricing',
+						'action'     => 'index',
+					),
+    			),
+        	),   
+
+            'services' => array(
+                    'type' => 'Zend\Mvc\Router\Http\Literal',
+                    'options' => array(
+                            'route'    => '/services',
+                            'defaults' => array(
+                                    'controller' => 'application/Controller/Services',
+                                    'action'     => 'index',
+                            ),
+                    ),
+            ),
 
             // The following is a route to simplify getting started creating
             // module. Simply drop new controllers in, and you can access them
@@ -99,9 +110,11 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => Controller\IndexController::class,
+            'Application\Controller\Index'      => Controller\IndexController::class,
         	'Application\Controller\Howitworks' => Controller\HowitworksController::class,
-        	'Application\Controller\Pricing' => Controller\PricingController::class,
+        	'Application\Controller\Pricing'    => Controller\PricingController::class,
+            'Application\Controller\Services'   => Controller\ServicesController::class,
+
         ),
     ),
     'view_manager' => array(

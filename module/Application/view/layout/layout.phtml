@@ -31,7 +31,7 @@
     top: 0;
     width: 100%;
     z-index: 10000;
-}
+	}
 	</style>
 	<body id="home">
 
@@ -88,7 +88,7 @@
 				<div class="row">
 					<div class="col-sm-6">
 						<h2>Drop us a line</h2>
-						<form role="form" name="contact-form" id="contact-form" action="process.php">
+						<form role="form" name="contact-form" id="contact-form" action="/services">
 							<div class="form-group" id="contact-name-group">
 								<label for="contact-name" class="sr-only">Name</label>
 								<input type="text" class="form-control" id="contact-name" placeholder="Name">
@@ -121,7 +121,7 @@
 								Australia</p>
 								<p><i class="fa fa-phone"></i>+61 406020681<br>
 								<i class="fa fa-fax"></i><br>
-								<i class="fa fa-envelope"></i><a href="mailto:armando@umityassessments.com">armando@unityassessments.com</a></p>
+								<i class="fa fa-envelope"></i><a href="mailto:armando@umityassessments.com.au">armando@unityassessments.com.au</a></p>
 								<p><i class="fa fa-clock-o"></i>Mon-Fri 9am - 5pm<br>
 								<i class="fa fa-clock-o"></i>Sat 10am - 2pm<br>
 								<i class="fa fa-clock-o"></i>Sun Closed</p>
@@ -236,12 +236,14 @@
 		//this is the id of the form
 		$("#contact-form").submit(function(e) {
 		
-		    var url = "/submit"; // the script where you handle the form input.
+		    alert(1);
+
+		    var url = "/services"; // the script where you handle the form input.
 		
 		    $.ajax({
 		           type: "POST",
 		           url: url,
-		           data: $("#idForm").serialize(), // serializes the form's elements.
+		           data: $("#contact-form").serialize(), // serializes the form's elements.
 		           success: function(data)
 		           {
 		               alert(data); // show response from the php script.
@@ -251,7 +253,7 @@
 		         });
 		
 		    e.preventDefault(); // avoid to execute the actual submit of the form.
-		    
+		
 		});
 		
 		
