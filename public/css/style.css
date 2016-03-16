@@ -139,11 +139,10 @@ hr {
 	h1, h2, h3, h4, h5, h6 {
 		letter-spacing: -0.05em;
 		margin: 0;
-		text-transform: uppercase;
 	}
 
 	h2 {
-		margin-bottom: 50px;
+		margin-bottom: 25px;
 	}
 
 	h2::after {
@@ -219,8 +218,13 @@ hr {
 	---------------------------------------------------------------*/
 
 	section {
-		padding: 80px 0;
+		padding: 30px 0;
 	}
+
+	.section2 {
+		padding: 20px 0;
+	}
+
 	.color4 {
 		background: #FFFFFF;
 	}
@@ -330,10 +334,10 @@ header {
 	z-index: 10000;
 }
 
-	header .container {
-		position: relative;
-		z-index: 1;
-	}
+header .container {
+	position: relative;
+	z-index: 1;
+}
 
 	header a,
 	header a:hover,

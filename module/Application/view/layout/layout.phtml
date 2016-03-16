@@ -19,6 +19,13 @@
 		<script src="js/respond.min.js"></script>
 		<![endif]-->
 
+
+		<!-- Start of unityassessments Zendesk Widget script -->
+		<script>/*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(c){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var o=this.createElement("script");n&&(this.domain=n),o.id="js-iframe-async",o.src=e,this.t=+new Date,this.zendeskHost=t,this.zEQueue=a,this.body.appendChild(o)},o.write('<body onload="document._l();">'),o.close()}("https://assets.zendesk.com/embeddable_framework/main.js","unityassessments.zendesk.com");
+		/*]]>*/</script>
+		<!-- End of unityassessments Zendesk Widget script -->
+
+
 	</head>
 	<style>
 	header {
@@ -42,6 +49,7 @@
 		  ga('create', 'UA-74966857-1', 'auto');
 		  ga('send', 'pageview');
 	</script>
+
 	<body id="home">
 
 		<!-- ============ PAGE LOADER START ============ -->
@@ -66,7 +74,7 @@
 			<div id="header-background" style="display:absolute;"></div>
 			<div class="container">
 				<div id="logo"  style="float:left;">
-					<a href="/" class="fm-button"><img src="images/logo-assessment.png" /></a>
+					<a href="/#" class="fm-button"><img src="images/logo-assessment.png" /></a>
 				</div>
 				
 				<div style="float:right;margin-top:20px;margin-right:0px;">
@@ -75,10 +83,12 @@
 					<a href="/pricing">Pricing</a> - 
 					<?php 
 					if(APPLICATION_ENV=="development"){ ?>
-					<a href="http://blog.dev-unityassessments.com.au/" target="_blank">Blog</a>
+						<a href="http://blog.dev-unityassessments.com.au/" target="_blank">Blog</a>
 					<?php }else { ?>
-					<a href="http://blog.unityassessments.com.au/" target="_blank">Blog</a>
+						<a href="http://blog.unityassessments.com.au/" target="_blank">Blog</a>
 					<?php } ?>
+					-
+					<a href="#" class="link-register">Login</a>
 					
 				</div>
 				
@@ -90,7 +100,7 @@
 		 <?php echo $this->content; ?>
 
 
-<!-- ============ CONTACT START ============ -->
+		<!-- ============ CONTACT START ============ -->
 
 		<section id="contact" class="color2">
 			<div class="container">
@@ -182,12 +192,46 @@
 						</div>
 					</div>
 				</div>
-			</div
-			>
+			</div>
+			
 		</footer>
 
 		<!-- ============ FOOTER END ============ -->
 
+
+
+		<!-- ============ REGISTER START ============ -->
+
+		<div class="popup" id="register">
+			<div class="popup-form">
+				<div class="popup-header">
+					<a class="close"><i class="fa fa-remove fa-lg"></i></a>
+					<h2>Login</h2>
+				</div>
+				<form>
+					<ul class="social-login">
+						<li><a class="btn btn-facebook"><i class="fa fa-facebook"></i>Login with Facebook</a></li>
+						<li><a class="btn btn-google"><i class="fa fa-google-plus"></i>Login with Google</a></li>
+						<li><a class="btn btn-linkedin"><i class="fa fa-linkedin"></i>Login with LinkedIn</a></li>
+					</ul>
+					<div class="form-group" style="margin-top:20px">
+						<h2>Resident creentials</h2>
+					</div>
+					<hr>
+					<div class="form-group">
+						<label for="register-username">Email</label>
+						<input type="text" class="form-control" id="register-username">
+					</div>
+					<div class="form-group">
+						<label for="register-password1">Password</label>
+						<input type="password" class="form-control" id="register-password1">
+					</div>
+					<button type="submit" class="btn btn-primary">Register</button>
+				</form>
+			</div>
+		</div>
+
+		<!-- ============ REGISTER END ============ -->
 		
 
 		<!-- Modernizr Plugin -->
@@ -240,32 +284,8 @@
 		<!-- jQuery Settings -->
 		<script src="js/settings.js"></script>
 
-		<script>
-		
-		//this is the id of the form
-		$("#contact-form").submit(function(e) {
-		
-		    alert(1);
-
-		    var url = "/services"; // the script where you handle the form input.
-		
-		    $.ajax({
-		           type: "POST",
-		           url: url,
-		           data: $("#contact-form").serialize(), // serializes the form's elements.
-		           success: function(data)
-		           {
-		               alert(data); // show response from the php script.
-		           }else{
-		        	   alert(data);
-			           }
-		         });
-		
-		    e.preventDefault(); // avoid to execute the actual submit of the form.
-		
-		});
-		
-		
-		</script>
 	</body>
+
+
+
 </html>

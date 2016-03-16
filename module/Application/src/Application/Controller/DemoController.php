@@ -12,19 +12,12 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class ServicesController extends AbstractActionController
+class DemoController extends AbstractActionController
 {
- 
-	/**
-	* @param string $subject
- 	* @param string $body
- 	*/
-    public static function index($subject = '',$body = ''){
 
-	    $this->_helper->layout->disableLayout();
-		$this->_helper->viewRenderer->setNoRender(TRUE);
-
-	}
-
+    public function indexAction()
+    {
+        return new ViewModel();
+    }
+    
 }
-

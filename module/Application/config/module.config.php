@@ -46,12 +46,12 @@ return array(
     			),
         	),   
 
-            'services' => array(
+            'demo' => array(
                     'type' => 'Zend\Mvc\Router\Http\Literal',
                     'options' => array(
-                            'route'    => '/services',
+                            'route'    => '/demo',
                             'defaults' => array(
-                                    'controller' => 'application/Controller/Services',
+                                    'controller' => 'application/Controller/Demo',
                                     'action'     => 'index',
                             ),
                     ),
@@ -114,8 +114,7 @@ return array(
             'Application\Controller\Index'      => Controller\IndexController::class,
         	'Application\Controller\Howitworks' => Controller\HowitworksController::class,
         	'Application\Controller\Pricing'    => Controller\PricingController::class,
-            'Application\Controller\Services'   => Controller\ServicesController::class,
-
+            'Application\Controller\Demo'       => Controller\DemoController::class,
         ),
     ),
     'view_manager' => array(
