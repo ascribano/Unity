@@ -14,7 +14,6 @@
 		}
 		
 		// Header scroll function
-
 		$(window).scroll(function() {    
 			var scroll = $(window).scrollTop();
 			if (scroll > 50) {
@@ -266,7 +265,6 @@
 		Page.init();
 
 		// ====================================================================
-
 		// Jobs
 
 		$("#more-jobs").click(function(){
@@ -275,7 +273,6 @@
 		 });
 
 		// ====================================================================
-
 		// Carousels
 
 		$("#blog .owl-carousel").owlCarousel({

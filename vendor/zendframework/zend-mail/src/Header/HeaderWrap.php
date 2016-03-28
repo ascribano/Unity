@@ -3,7 +3,7 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
@@ -65,7 +65,7 @@ abstract class HeaderWrap
         $delimiter = $header->getDelimiter();
 
         $length = strlen($value);
-        $lines  = array();
+        $lines  = [];
         $temp   = '';
         for ($i = 0; $i < $length; $i++) {
             $temp .= $value[$i];
@@ -116,7 +116,7 @@ abstract class HeaderWrap
      */
     public static function canBeEncoded($value)
     {
-        $encoded = iconv_mime_encode('x-test', $value, array('scheme' => 'Q'));
+        $encoded = iconv_mime_encode('x-test', $value, ['scheme' => 'Q']);
 
         return (false !== $encoded);
     }

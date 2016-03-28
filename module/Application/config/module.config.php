@@ -29,7 +29,7 @@ return array(
 			   	'options' => array(
 				    'route'    => '/howitworks',
 				    'defaults' => array(
-				        'controller' => 'application/Controller/Howitworks',
+				        'controller' => 'Application/Controller/Howitworks',
 				        'action'     => 'index',
 			      	),
 				),
@@ -40,23 +40,80 @@ return array(
     			'options' => array(
 					'route'    => '/pricing',
 					'defaults' => array(
-						'controller' => 'application/Controller/Pricing',
+						'controller' => 'Application/Controller/Pricing',
 						'action'     => 'index',
 					),
     			),
         	),   
 
             'demo' => array(
-                    'type' => 'Zend\Mvc\Router\Http\Literal',
-                    'options' => array(
-                            'route'    => '/demo',
-                            'defaults' => array(
-                                    'controller' => 'application/Controller/Demo',
-                                    'action'     => 'index',
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                        'route'    => '/demo',
+                        'defaults' => array(
+                            'controller' => 'Application/Controller/Demo',
+                            'action'     => 'index',
+                        ),
+                ),
+                'may_terminate' => true,
+                'child_routes'  => array(
+                    'process'   => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/[:action]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ),
+                            'defaults' => array(
+                            ),
+                        ),
                     ),
+                ),
             ),
 
+           /*'services' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/services',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Services',
+                        'action'        => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'process' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/[:action]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                            ),
+                        ),
+                    ),
+                ),
+            ),*/
+
+            // The following section is new` and should be added to your file
+            'services' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/services[/:id]',
+                    'constraints' => array(
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Services',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
+            
             // The following is a route to simplify getting started creating
             // module. Simply drop new controllers in, and you can access them
             // using the path /application/:controller/:action
@@ -88,6 +145,7 @@ return array(
                     ),
                 ),
             ),
+
         ),
     ),
     'service_manager' => array(
@@ -98,7 +156,7 @@ return array(
         'factories' => array(
             'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
         ),
-    ),
+    ),  
     'translator' => array(
         'locale' => 'en_US',
         'translation_file_patterns' => array(
@@ -111,10 +169,11 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index'      => Controller\IndexController::class,
-        	'Application\Controller\Howitworks' => Controller\HowitworksController::class,
-        	'Application\Controller\Pricing'    => Controller\PricingController::class,
-            'Application\Controller\Demo'       => Controller\DemoController::class,
+            'Application\Controller\Index'          => Controller\IndexController::class,
+        	'Application\Controller\Howitworks'     => Controller\HowitworksController::class,
+        	'Application\Controller\Pricing'        => Controller\PricingController::class,
+            'Application\Controller\Demo'           => Controller\DemoController::class,
+            'Application\Controller\Services'       => Controller\ServicesController::class
         ),
     ),
     'view_manager' => array(
@@ -134,6 +193,26 @@ return array(
             __DIR__ . '/../view',
         ),
     ),
+
+    'doctrine' => array(
+        'driver' => array(
+          __NAMESPACE__ . '_driver' => array(
+            'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+            'cache' => 'array',
+            'paths' => array(__DIR__ . '/../src/' . __NAMESPACE__ . '/Entity')
+          ),
+          'orm_default' => array(
+            'drivers' => array(
+              __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+            )
+          )
+        )
+      ),
+
+    'strategies' => array(
+        'ViewJsonStrategy',
+    ),
+
     // Placeholder for console routes
     'console' => array(
         'router' => array(

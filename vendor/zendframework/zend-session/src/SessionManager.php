@@ -9,6 +9,7 @@
 
 namespace Zend\Session;
 
+use Zend\EventManager\Event;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Stdlib\ArrayUtils;
 
@@ -23,10 +24,10 @@ class SessionManager extends AbstractManager
      * - clear_storage: whether or not to empty the storage object of any stored values
      * @var array
      */
-    protected $defaultDestroyOptions = array(
+    protected $defaultDestroyOptions = [
         'send_expire_cookie' => true,
         'clear_storage'      => false,
-    );
+    ];
 
     /**
      * @var string value returned by session_name()
@@ -51,10 +52,10 @@ class SessionManager extends AbstractManager
         Config\ConfigInterface $config = null,
         Storage\StorageInterface $storage = null,
         SaveHandler\SaveHandlerInterface $saveHandler = null,
-        array $validators = array()
+        array $validators = []
     ) {
         parent::__construct($config, $storage, $saveHandler, $validators);
-        register_shutdown_function(array($this, 'writeClose'));
+        register_shutdown_function([$this, 'writeClose']);
     }
 
     /**
@@ -64,6 +65,9 @@ class SessionManager extends AbstractManager
      */
     public function sessionExists()
     {
+        if (session_status() == PHP_SESSION_ACTIVE) {
+            return true;
+        }
         $sid = defined('SID') ? constant('SID') : false;
         if ($sid !== false && $this->getId()) {
             return true;
@@ -98,7 +102,7 @@ class SessionManager extends AbstractManager
             $this->registerSaveHandler($saveHandler);
         }
 
-        $oldSessionData = array();
+        $oldSessionData = [];
         if (isset($_SESSION)) {
             $oldSessionData = $_SESSION;
         }
@@ -146,7 +150,7 @@ class SessionManager extends AbstractManager
             }
 
             $validator = new $validator(null);
-            $validatorChain->attach('session.validate', array($validator, 'isValid'));
+            $validatorChain->attach('session.validate', [$validator, 'isValid']);
         }
     }
 
@@ -369,13 +373,23 @@ class SessionManager extends AbstractManager
     public function isValid()
     {
         $validator = $this->getValidatorChain();
-        $responses = $validator->trigger('session.validate', $this, array($this), function ($test) {
+
+        $event = new Event();
+        $event->setName('session.validate');
+        $event->setTarget($this);
+        $event->setParams($this);
+
+        $falseResult = function ($test) {
             return false === $test;
-        });
+        };
+
+        $responses = $validator->triggerEventUntil($falseResult, $event);
+
         if ($responses->stopped()) {
             // If execution was halted, validation failed
             return false;
         }
+
         // Otherwise, we're good to go
         return true;
     }
@@ -440,13 +454,6 @@ class SessionManager extends AbstractManager
      */
     protected function registerSaveHandler(SaveHandler\SaveHandlerInterface $saveHandler)
     {
-        return session_set_save_handler(
-            array($saveHandler, 'open'),
-            array($saveHandler, 'close'),
-            array($saveHandler, 'read'),
-            array($saveHandler, 'write'),
-            array($saveHandler, 'destroy'),
-            array($saveHandler, 'gc')
-        );
+        return session_set_save_handler($saveHandler);
     }
 }

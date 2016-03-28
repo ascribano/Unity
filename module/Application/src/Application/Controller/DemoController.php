@@ -17,6 +17,29 @@ class DemoController extends AbstractActionController
 
     public function indexAction()
     {
+
+        $data = $this->getRequest();
+        if($this->getRequest()->isPost()){
+            if($form->isValid($_POST)){
+
+                $data = $form->getValues();
+                $auth = Zend_Auth::getInstance();
+                $authAdapter = new Zend_Auth_Adapter_DbTable($users->getAdapter(),'users');
+                $authAdapter->setIdentityColumn('username')
+                            ->setCredentialColumn('password');
+                $authAdapter->setIdentity($data['username'])
+                            ->setCredential($data['password']);
+                $result = $auth->authenticate($authAdapter);
+                if($result->isValid()){
+                    $storage = new Zend_Auth_Storage_Session();
+                    $storage->write($authAdapter->getResultRowObject());
+                    $this->_redirect('auth/home');
+                } else {
+                    $this->view->errorMessage = "Invalid username or password. Please try again.";
+                }
+
+            }
+        }
         return new ViewModel();
     }
     

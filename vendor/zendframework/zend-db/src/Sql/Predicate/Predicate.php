@@ -242,7 +242,7 @@ class Predicate extends PredicateSet
      * @param $parameters
      * @return $this
      */
-    public function expression($expression, $parameters)
+    public function expression($expression, $parameters = null)
     {
         $this->addPredicate(
             new Expression($expression, $parameters),
@@ -375,6 +375,27 @@ class Predicate extends PredicateSet
     {
         $this->addPredicate(
             new Between($identifier, $minValue, $maxValue),
+            ($this->nextPredicateCombineOperator) ?: $this->defaultCombination
+        );
+        $this->nextPredicateCombineOperator = null;
+
+        return $this;
+    }
+
+    /**
+     * Create "NOT BETWEEN" predicate
+     *
+     * Utilizes NotBetween predicate
+     *
+     * @param  string $identifier
+     * @param  int|float|string $minValue
+     * @param  int|float|string $maxValue
+     * @return Predicate
+     */
+    public function notBetween($identifier, $minValue, $maxValue)
+    {
+        $this->addPredicate(
+            new NotBetween($identifier, $minValue, $maxValue),
             ($this->nextPredicateCombineOperator) ?: $this->defaultCombination
         );
         $this->nextPredicateCombineOperator = null;

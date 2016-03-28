@@ -10,8 +10,8 @@
 namespace Zend\Db\ResultSet;
 
 use ArrayObject;
-use Zend\Stdlib\Hydrator\ArraySerializable;
-use Zend\Stdlib\Hydrator\HydratorInterface;
+use Zend\Hydrator\ArraySerializable;
+use Zend\Hydrator\HydratorInterface;
 
 class HydratingResultSet extends AbstractResultSet
 {
@@ -117,7 +117,7 @@ class HydratingResultSet extends AbstractResultSet
      */
     public function toArray()
     {
-        $return = array();
+        $return = [];
         foreach ($this as $row) {
             $return[] = $this->getHydrator()->extract($row);
         }

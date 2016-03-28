@@ -20,7 +20,7 @@ final class Version
     /**
      * Zend Framework version identification - see compareVersion()
      */
-    const VERSION = '2.5.1';
+    const VERSION = '2.6.0dev';
 
     /**
      * Github Service Identifier for version information is retrieved from
@@ -166,11 +166,11 @@ final class Version
 
         if ($httpClient === null) {
             $context = stream_context_create(
-                array(
-                    'http' => array(
+                [
+                    'http' => [
                         'user_agent' => sprintf('Zend-Version/%s', self::VERSION),
-                    ),
-                )
+                    ],
+                ]
             );
             $apiResponse = file_get_contents($url, false, $context);
         } else {

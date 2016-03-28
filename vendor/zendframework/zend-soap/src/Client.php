@@ -33,7 +33,7 @@ class Client implements ServerClient
      * Registered fault exceptions
      * @var array
      */
-    protected $faultExceptions = array();
+    protected $faultExceptions = [];
 
     /**
      * Last invoked method
@@ -45,7 +45,7 @@ class Client implements ServerClient
      * Permanent SOAP request headers (shared between requests).
      * @var array
      */
-    protected $permanentSoapInputHeaders = array();
+    protected $permanentSoapInputHeaders = [];
 
     /**
      * SoapClient object
@@ -57,13 +57,13 @@ class Client implements ServerClient
      * Array of SoapHeader objects
      * @var SoapHeader[]
      */
-    protected $soapInputHeaders = array();
+    protected $soapInputHeaders = [];
 
     /**
      * Array of SoapHeader objects
      * @var array
      */
-    protected $soapOutputHeaders = array();
+    protected $soapOutputHeaders = [];
 
     /**
      * SOAP version to use; SOAP_1_2 by default, to allow processing of headers
@@ -82,6 +82,20 @@ class Client implements ServerClient
      * @var string
      */
     protected $wsdl = null;
+
+    /**
+     * Whether to send the "Connection: Keep-Alive" header (true) or "Connection: close" header (false)
+     * Available since PHP 5.4.0
+     * @var bool
+     */
+    protected $keepAlive;
+
+    /**
+     * One of SOAP_SSL_METHOD_TLS, SOAP_SSL_METHOD_SSLv2, SOAP_SSL_METHOD_SSLv3 or SOAP_SSL_METHOD_SSLv23
+     * Available since PHP 5.5.0
+     * @var int
+     */
+    protected $sslMethod;
 
     /**#@+
      * @var string
@@ -275,6 +289,16 @@ class Client implements ServerClient
                     $this->connectionTimeout = $value;
                     break;
 
+                case 'keepalive':
+                case 'keep_alive':
+                    $this->setKeepAlive($value);
+                    break;
+
+                case 'sslmethod':
+                case 'ssl_method':
+                    $this->setSslMethod($value);
+                    break;
+
                 default:
                     throw new Exception\InvalidArgumentException('Unknown SOAP client option');
             }
@@ -290,7 +314,7 @@ class Client implements ServerClient
      */
     public function getOptions()
     {
-        $options = array();
+        $options = [];
 
         $options['classmap']       = $this->getClassmap();
         $options['typemap']        = $this->getTypemap();
@@ -315,13 +339,15 @@ class Client implements ServerClient
         $options['cache_wsdl']     = $this->getWSDLCache();
         $options['features']       = $this->getSoapFeatures();
         $options['user_agent']     = $this->getUserAgent();
+        $options['keep_alive']     = $this->getKeepAlive();
+        $options['ssl_method']     = $this->getSslMethod();
 
         foreach ($options as $key => $value) {
             /*
              * ugly hack as I don't know if checking for '=== null'
              * breaks some other option
              */
-            if (in_array($key, array('user_agent', 'cache_wsdl', 'compression'))) {
+            if (in_array($key, ['user_agent', 'cache_wsdl', 'compression'])) {
                 if ($value === null) {
                     unset($options[$key]);
                 }
@@ -344,7 +370,7 @@ class Client implements ServerClient
      */
     public function setSoapVersion($version)
     {
-        if (!in_array($version, array(SOAP_1_1, SOAP_1_2))) {
+        if (!in_array($version, [SOAP_1_1, SOAP_1_2])) {
             throw new Exception\InvalidArgumentException(
                 'Invalid soap version specified. Use SOAP_1_1 or SOAP_1_2 constants.'
             );
@@ -535,7 +561,7 @@ class Client implements ServerClient
      */
     public function setStyle($style)
     {
-        if (!in_array($style, array(SOAP_RPC, SOAP_DOCUMENT))) {
+        if (!in_array($style, [SOAP_RPC, SOAP_DOCUMENT])) {
             throw new Exception\InvalidArgumentException(
                 'Invalid request style specified. Use SOAP_RPC or SOAP_DOCUMENT constants.'
             );
@@ -565,7 +591,7 @@ class Client implements ServerClient
      */
     public function setEncodingMethod($use)
     {
-        if (!in_array($use, array(SOAP_ENCODED, SOAP_LITERAL))) {
+        if (!in_array($use, [SOAP_ENCODED, SOAP_LITERAL])) {
             throw new Exception\InvalidArgumentException(
                 'Invalid message encoding method. Use SOAP_ENCODED or SOAP_LITERAL constants.'
             );
@@ -988,9 +1014,9 @@ class Client implements ServerClient
     {
         // Perform request as is
         if ($oneWay === null) {
-            return call_user_func(array($client, 'SoapClient::__doRequest'), $request, $location, $action, $version);
+            return call_user_func([$client, 'SoapClient::__doRequest'], $request, $location, $action, $version);
         }
-        return call_user_func(array($client, 'SoapClient::__doRequest'), $request, $location, $action, $version, $oneWay);
+        return call_user_func([$client, 'SoapClient::__doRequest'], $request, $location, $action, $version, $oneWay);
     }
 
     /**
@@ -1001,7 +1027,7 @@ class Client implements ServerClient
     protected function _initSoapClientObject()
     {
         $wsdl = $this->getWSDL();
-        $options = array_merge($this->getOptions(), array('trace' => true));
+        $options = array_merge($this->getOptions(), ['trace' => true]);
 
         if ($wsdl === null) {
             if (!isset($options['location'])) {
@@ -1020,7 +1046,7 @@ class Client implements ServerClient
         }
         unset($options['wsdl']);
 
-        $this->soapClient = new Client\Common(array($this, '_doRequest'), $wsdl, $options);
+        $this->soapClient = new Client\Common([$this, '_doRequest'], $wsdl, $options);
     }
 
 
@@ -1076,8 +1102,8 @@ class Client implements ServerClient
      */
     public function resetSoapInputHeaders()
     {
-        $this->permanentSoapInputHeaders = array();
-        $this->soapInputHeaders          = array();
+        $this->permanentSoapInputHeaders = [];
+        $this->soapInputHeaders          = [];
         return $this;
     }
 
@@ -1101,7 +1127,7 @@ class Client implements ServerClient
     public function __call($name, $arguments)
     {
         if (!is_array($arguments)) {
-            $arguments = array($arguments);
+            $arguments = [$arguments];
         }
         $soapClient = $this->getSoapClient();
 
@@ -1111,13 +1137,13 @@ class Client implements ServerClient
         $result = $soapClient->__soapCall(
             $name,
             $this->_preProcessArguments($arguments),
-            null, /* Options are already set to the SOAP client object */
-            (count($soapHeaders) > 0)? $soapHeaders : null,
+            [], /* Options are already set to the SOAP client object */
+            (count($soapHeaders) > 0)? $soapHeaders : [],
             $this->soapOutputHeaders
         );
 
         // Reset non-permanent input headers
-        $this->soapInputHeaders = array();
+        $this->soapInputHeaders = [];
 
         return $this->_preProcessResult($result);
     }
@@ -1129,9 +1155,9 @@ class Client implements ServerClient
      * @param  array $params List of parameters for the method.
      * @return mixed Returned results.
      */
-    public function call($method, $params = array())
+    public function call($method, $params = [])
     {
-        return call_user_func_array(array($this, '__call'), array($method, $params));
+        return call_user_func_array([$this, '__call'], [$method, $params]);
     }
 
     /**
@@ -1208,6 +1234,42 @@ class Client implements ServerClient
     {
         $soapClient = $this->getSoapClient();
         $soapClient->__setCookie($cookieName, $cookieValue);
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getKeepAlive()
+    {
+        return $this->keepAlive;
+    }
+
+    /**
+     * @param boolean $keepAlive
+     * @return self
+     */
+    public function setKeepAlive($keepAlive)
+    {
+        $this->keepAlive = (bool) $keepAlive;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSslMethod()
+    {
+        return $this->sslMethod;
+    }
+
+    /**
+     * @param int $sslMethod
+     * @return self
+     */
+    public function setSslMethod($sslMethod)
+    {
+        $this->sslMethod = $sslMethod;
         return $this;
     }
 }

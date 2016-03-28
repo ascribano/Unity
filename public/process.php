@@ -56,7 +56,7 @@ $data 			= array(); 		// array to pass back data
     	}else{
 
     		$data['success'] = false;
-			$data['message'] = 'The email could not be delivered, please send an email to armando@unityassessments.com.au';
+			$data['message'] = 'The email could not be delivered, please send an email to armando@Unityassessments.com.au';
     	}
 
 		// show a message of success and provide a true success variable

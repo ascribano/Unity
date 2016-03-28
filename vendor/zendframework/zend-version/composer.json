@@ -13,12 +13,11 @@
         }
     },
     "require": {
-        "php": ">=5.3.23",
+        "php": ">=5.5",
         "zendframework/zend-json": "~2.5"
     },
     "suggest": {
-        "zendframework/zend-http": "Allows use of Zend\\Http\\Client to check version information",
-        "zendframework/zend-json": "To check latest version hosted in GitHub"
+        "zendframework/zend-http": "Allows use of Zend\\Http\\Client to check version information"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
